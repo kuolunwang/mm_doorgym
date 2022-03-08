@@ -1,0 +1,6 @@
+[submodule "catkin_ws/src/husky_ur5"]
+	path = catkin_ws/src/husky_ur5
+	url = git@github.com:ARG-NCTU/semi-obs-navigation.git
+[submodule "catkin_ws/src/real_to_sim_env"]
+	path = catkin_ws/src/real_to_sim_env
+	url = git@github.com:ARG-NCTU/real_to_sim_env.git
