@@ -58,5 +58,5 @@ docker run -it \
   $DOCKER_OPTS \
   --privileged \
   --security-opt seccomp=unconfined \
-  argnctu/pokingbot-rl:rtx30 \
+  argnctu/pokingbot-rl:latest \
   bash
