@@ -1,5 +1,7 @@
 # PokingBot
 
+![example workflow](https://github.com/ARG-NCTU/PokingBot/actions/workflows/main.yml/badge.svg)
+
 PokingBot : Enabling Real-world Interactive Navigation via
 Curriculum Reinforcement Learning for Search and Rescue Missions
 
