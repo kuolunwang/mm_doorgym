@@ -34,4 +34,5 @@ jobs:
       - name: Run catkin_make
         shell: bash
         run: |
+          source /opt/ros/melodic/setup.bash
           source catkin_make.sh
