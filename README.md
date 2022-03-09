@@ -1,18 +1,18 @@
 # pokingbot
 
-![example workflow](https://github.com/ARG-NCTU/PokingBot/actions/workflows/main.yml/badge.svg)
+![example workflow](https://github.com/ARG-NCTU/pokingbot/actions/workflows/main.yml/badge.svg)
 
 PokingBot : Enabling Real-world Interactive Navigation via
 Curriculum Reinforcement Learning for Search and Rescue Missions
 
 ## Clone repo
 ```
-    git clone --recursive git@github.com:ARG-NCTU/PokingBot.git
+    git clone --recursive git@github.com:ARG-NCTU/pokingbot.git
 ```
 
 ## Download pretrained weight and mesh file
 
-Please manual download [pretrained weight](https://drive.google.com/drive/folders/1ZND9f0_t7W-6U3cFv8tmFs50dQQBadG8?usp=sharing) to PokingBot/catkin_ws/src/pokingbot_rl/model and [mesh file](https://drive.google.com/file/d/19Z9GJjG-H34WpE_lON0qYFkzD-fb7x_j/view?usp=sharing) to PokingBot/catkin_ws/src/real_to_sim_env/mesh.
+Please manual download [pretrained weight](https://drive.google.com/drive/folders/1ZND9f0_t7W-6U3cFv8tmFs50dQQBadG8?usp=sharing) to pokingbot/catkin_ws/src/pokingbot_rl/model and [mesh file](https://drive.google.com/file/d/19Z9GJjG-H34WpE_lON0qYFkzD-fb7x_j/view?usp=sharing) to pokingbot/catkin_ws/src/real_to_sim_env/mesh.
 
 **After download mesh finished, recommend delete all jpg file in EE6F/mesh, avoid GPU run out of space**. 
 
@@ -168,6 +168,6 @@ Then open two termianl, one is set goal, inital robot position and set door angl
             rostopic pub /robot/joy_teleop/joy sensor_msgs/Joy '{ header: {seq: 10, stamp: {secs: 1431222430, nsecs: 345678}, frame_id: "3"}, axes: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0], buttons: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]}'
         ```
         
-## Navigation in Virtual DARPA Subt Challenge
+<!-- ## Navigation in Virtual DARPA Subt Challenge -->
 
 
