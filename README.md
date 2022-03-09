@@ -1,4 +1,4 @@
-# PokingBot
+# pokingbot
 
 ![example workflow](https://github.com/ARG-NCTU/PokingBot/actions/workflows/main.yml/badge.svg)
 
@@ -55,6 +55,7 @@ We arranged all command in procman, easy to inference our proposed method and Ru
 ### Open procman window
 ```
     source docker_run.sh
+    source catkin_make.sh
     source environment.sh
     source start_EE6F.sh
 ```
@@ -81,7 +82,7 @@ Then open two termianl, one is set goal, inital robot position and set door angl
     ```
     - set goal
     
-        you can use 2D Nav Goal in Rviz or use command to decide.
+        You can use 2D Nav Goal in Rviz or use command to decide.
         ```
             rostopic pub /move_base_simple/goal geometry_msgs/PoseStamped "header:
             seq: 0
@@ -102,7 +103,7 @@ Then open two termianl, one is set goal, inital robot position and set door angl
         ```
     - init robot
 
-        you can use move in gazebo to move robot or use command to set.
+        You can use move in gazebo to move robot or use command to set.
         ```
             rosservice call /gazebo/set_model_state "model_state:
             model_name: 'robot'
@@ -130,7 +131,7 @@ Then open two termianl, one is set goal, inital robot position and set door angl
 
     - init door
 
-        you can decide door angle by using this command.
+        You can decide door angle by using this command.
         ```
             rosservice call /gazebo/set_model_configuration "model_name: 'hinge_door_1.2_1'
             urdf_param_name: 'robot_description'
@@ -139,7 +140,7 @@ Then open two termianl, one is set goal, inital robot position and set door angl
             joint_positions:
             - 0"
         ```
-2. two terminal
+2. Two terminal
     
     **If use joystick, you can ignore this step**.
 
@@ -149,7 +150,7 @@ Then open two termianl, one is set goal, inital robot position and set door angl
         source environment.sh
     ```
 
-    - start 
+    - Start 
         
         **If use joystick, press start to run**.
 
@@ -158,7 +159,7 @@ Then open two termianl, one is set goal, inital robot position and set door angl
             rostopic pub /robot/joy_teleop/joy sensor_msgs/Joy '{ header: {seq: 10, stamp: {secs: 1431222430, nsecs: 345678}, frame_id: "3"}, axes: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0], buttons: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]}'
         ```
 
-    - stop
+    - Stop
 
         **If use joystick, press back to stop**.
 

@@ -15,7 +15,7 @@ cmd "04_door_detection" {
     host = "localhost";
 }
 cmd "05_inference" {
-    exec = "roslaunch pokingbot_rl goal_rl_tf.launch ";
+    exec = "roslaunch pokingbot_ros goal_rl_tf.launch ";
     host = "localhost";
 }
 cmd "06_rviz" {
