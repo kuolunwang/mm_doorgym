@@ -36,7 +36,7 @@ The all required environment was organized, only need laptop or computer with GP
     ```
 3. Catkin_make
 
-    Execute compile script in the first time, then the other can ignore this setp.
+    Execute compile script in the first time, then the other can ignore this step.
     ```
         source catkin_make.sh
     ``` 
