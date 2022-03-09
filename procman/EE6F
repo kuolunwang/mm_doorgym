@@ -7,7 +7,7 @@ cmd "02_EE6F" {
     host = "localhost";
 }
 cmd "03_husky" {
-    exec = "roslaunch husky_ur5 spawn_robot.launch";
+    exec = "roslaunch husky_ur5 spawn_robot.launch x:=27.5 y:=-23.47 z:=0.13 yaw:=-3.13";
     host = "localhost";
 }
 cmd "04_door_detection" {
@@ -22,7 +22,6 @@ cmd "06_rviz" {
     exec = "rviz -d rviz/visual.rviz";
     host = "localhost";
 }
-
 
 script "open_env" {
     start cmd "01_core" wait "running";
