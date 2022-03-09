@@ -12,7 +12,7 @@ Curriculum Reinforcement Learning for Search and Rescue Missions
 
 ## Download pretrained weight and mesh file
 
-Please manual download [pretrained weight](https://drive.google.com/drive/folders/1ZND9f0_t7W-6U3cFv8tmFs50dQQBadG8?usp=sharing) to pokingbot/catkin_ws/src/pokingbot_rl/model and [mesh file](https://drive.google.com/file/d/19Z9GJjG-H34WpE_lON0qYFkzD-fb7x_j/view?usp=sharing) to pokingbot/catkin_ws/src/real_to_sim_env/mesh.
+Please manual download [pretrained weight](https://drive.google.com/drive/folders/1ZND9f0_t7W-6U3cFv8tmFs50dQQBadG8?usp=sharing) to pokingbot/catkin_ws/src/pokingbot_ros/model and [mesh file](https://drive.google.com/file/d/19Z9GJjG-H34WpE_lON0qYFkzD-fb7x_j/view?usp=sharing) to pokingbot/catkin_ws/src/real_to_sim_env/mesh.
 
 **After download mesh finished, recommend delete all jpg file in EE6F/mesh, avoid GPU run out of space**. 
 
