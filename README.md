@@ -22,21 +22,39 @@ The all required environment was organized, only need laptop or computer with GP
 
 ### How to use
 
+We released two version docker images, one is for developer that can modifiy other packages on this and compile by yourself, the other one is for user that easy to use without extra catkin_make.
+
 1. Docker Run
 
-    Run this script to pull docker image to your workstation, **if your gpu is 30 series GPU, please edit docker image label from latest to rtx30 in docker_run.sh and docker_join.sh**.
-    ```
-        source docker_run.sh
-    ```
+    Run this script to pull docker image to your workstation, **if your gpu is 30 series GPU, please edit docker image label from latest(rtx20_user) to rtx30(rtx30_user) in docker_run.sh(docker_run_user.sh) and docker_join.sh(docker_join_user.sh)**.
+    - For the developer
+
+        ```
+            source docker_run.sh
+        ```
+
+    - For the user
+
+        ```
+            source docker_run_user.sh
+        ```
 2. Docker Join
 
     If want to enter same docker image, type below command.
-    ```
-        source docker_join.sh
-    ```
+    - For the developer
+
+        ```
+            source docker_join.sh
+        ```
+
+    - For the user
+
+        ```
+            source docker_join_user.sh
+        ```
 3. Catkin_make
 
-    Execute compile script in the first time, then the other can ignore this step.
+    Execute compile script in the first time, then the other can ignore this step. **If you use user mode, you can ignore this command.**
     ```
         source catkin_make.sh
     ``` 
@@ -50,7 +68,7 @@ The all required environment was organized, only need laptop or computer with GP
 
 ## Navigation in Matterport3D Counterpart 
 
-We arranged all command in procman, easy to inference our proposed method and Run our Matterport3D Counterpart environment.
+We arranged all command in procman, easy to inference our proposed method and Run our Matterport3D Counterpart environment. **This example use developer mode to demo.**
 
 ### Open procman window
 ```
