@@ -31,6 +31,7 @@ RUN apt-get -o Acquire::ForceIPv4=true update && apt-get -yq dist-upgrade \
     python3-numpy \
     python3-empy  \
     python3-opencv \
+    unzip \
     && add-apt-repository -y ppa:git-core/ppa \
     && apt-get update && apt-get install -y git \
     && apt-get clean \
@@ -90,6 +91,7 @@ RUN apt-get -o Acquire::ForceIPv4=true update && apt-get -o Acquire::ForceIPv4=t
     ros-$ROS_DISTRO-effort-controllers \
     ros-$ROS_DISTRO-ros-control \
     ros-$ROS_DISTRO-ros-controllers \
+    ros-$ROS_DISTRO-lms1xx \
     python-rosdep \
     python-rosinstall \
     python-rosinstall-generator \
@@ -198,9 +200,29 @@ RUN pip3 install \
 #RUN pip3 install -U 'jedi<0.18.0' \
 #    && jupyter serverextension enable --py jupyter_http_over_ws
 
-RUN git clone --recursive git@github.com:ARG-NCTU/pokingbot.git \
-    && cd pokingbot \
-    && source catkin_make.sh
+
+# add ssh key in docker and clone repo
+ARG SSH_PRIVATE_KEY
+RUN mkdir /root/.ssh/
+RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa
+RUN chmod 600 /root/.ssh/id_rsa
+RUN touch /root/.ssh/known_hosts
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+RUN cd ${HOME} && git clone --recursive git@github.com:ARG-NCTU/pokingbot.git 
+
+RUN /bin/bash -c '. /opt/ros/melodic/setup.bash \
+    && cd ~/pokingbot/catkin_ws \
+    && catkin_make'
+
+# download pretrained weight and mesh file
+
+RUN cd ~/pokingbot/catkin_ws/src/real_to_sim_env/mesh \
+    && gdown https://drive.google.com/uc?id=1xch2RKZQ_VSI9Yde2JIontCvqEyHWv1A \
+    && unzip EE6F.zip \
+    && cd ~/pokingbot/catkin_ws/src/pokingbot_ros/model \
+    && gdown https://drive.google.com/uc?id=13MaWP4yEYIHtXDrC27XwuC1kMnFGcNG- \
+    && unzip policy.zip
 
 ##################################### Settings #####################################
 
@@ -208,7 +230,6 @@ RUN echo "root ALL=(ALL)  ALL" >> /etc/sudoers \
     && echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ${HOME}/.bashrc \
     &&  echo "source ~/catkin_ws/install/setup.bash" >> ${HOME}/.bashrc \
 #    && echo "cd ~/semi-obstacle-navigation" >> ${HOME}/.bashrc
-
 
 # Support of nvidia-docker 2.0
 ENV NVIDIA_VISIBLE_DEVICES=all
