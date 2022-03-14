@@ -5,11 +5,16 @@
     <arg name="veh" default="robot" />
     <arg name="cmd" default="cmd_vel" />
     <arg name="joy" default="joy_teleop/joy" />
+    <arg name="linear_scale" default="0.3" />
+    <arg name="angular_scale" default="0.45" />
 
     <group ns="$(arg veh)">
         <node pkg="pokingbot_ros" type="pub_gazebo_tf.py" name="pub_gazebo_tf" output="screen" />
 
         <node pkg="pokingbot_ros" type="goal_nav_tf.py" name="goal_nav_rl" output="screen">
+            <param name="linear_scale" value="$(arg linear_scale)" />
+            <param name="angular_scale" value="$(arg angular_scale)" />
+
             <remap from="goal_in" to="/move_base_simple/goal" />
             <remap from="laser_in" to="/RL/scan_label" />
             <remap from="odom_in" to="truth_map_posestamped" />
