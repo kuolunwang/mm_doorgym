@@ -14,9 +14,9 @@ Curriculum Reinforcement Learning for Search and Rescue Missions
 
 Please manual download [pretrained weight](https://drive.google.com/drive/folders/1ZND9f0_t7W-6U3cFv8tmFs50dQQBadG8?usp=sharing) to pokingbot/catkin_ws/src/pokingbot_ros/model and [mesh file](https://drive.google.com/file/d/19Z9GJjG-H34WpE_lON0qYFkzD-fb7x_j/view?usp=sharing) to pokingbot/catkin_ws/src/real_to_sim_env/mesh.
 
-**After download mesh finished, recommend delete all jpg file in EE6F/mesh, avoid GPU run out of space**. 
+**After download mesh finished, recommend delete all jpg file in EE6F/mesh, avoid GPU run out of space**.
 
-## Set up the Docker 
+## Set up the Docker
 
 The all required environment was organized, only need laptop or computer with GPU, and make sure install docker already.
 
@@ -57,16 +57,16 @@ We released two version docker images, one is for developer that can modifiy oth
     Execute compile script in the first time, then the other can ignore this step. **If you use user mode, you can ignore this command.**
     ```
         source catkin_make.sh
-    ``` 
+    ```
 
 4. setup environment
 
-    Make sure run this command when the terminal enter docker. 
+    Make sure run this command when the terminal enter docker.
     ```
         source environment.sh
     ```
 
-## Navigation in Matterport3D Counterpart 
+## Navigation in Matterport3D Counterpart
 
 We arranged all command in procman, easy to inference our proposed method and Run our Matterport3D Counterpart environment. **This example use developer mode to demo.**
 
@@ -99,7 +99,7 @@ Then open two termianl, one is set goal, inital robot position and set door angl
         source environment.sh
     ```
     - set goal
-    
+
         You can use 2D Nav Goal in Rviz or use command to decide.
         ```
             rostopic pub /move_base_simple/goal geometry_msgs/PoseStamped "header:
@@ -159,7 +159,7 @@ Then open two termianl, one is set goal, inital robot position and set door angl
             - 0"
         ```
 2. Two terminal
-    
+
     **If use joystick, you can ignore this step**.
 
     Please make sure the navigation goal was set.
@@ -168,8 +168,8 @@ Then open two termianl, one is set goal, inital robot position and set door angl
         source environment.sh
     ```
 
-    - Start 
-        
+    - Start
+
         **If use joystick, press start to run**.
 
         Using below command to replace joystick control.
@@ -185,7 +185,20 @@ Then open two termianl, one is set goal, inital robot position and set door angl
         ```
             rostopic pub /robot/joy_teleop/joy sensor_msgs/Joy '{ header: {seq: 10, stamp: {secs: 1431222430, nsecs: 345678}, frame_id: "3"}, axes: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0], buttons: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]}'
         ```
-        
-<!-- ## Navigation in Virtual DARPA Subt Challenge -->
 
+## Navigation in Virtual DARPA Subt Challenge
 
+### Open procman window
+```
+    source docker_run.sh
+    source catkin_make.sh
+    source environment.sh
+    source start_urban.sh
+```
+
+After open procman, you will see below window pop up.
+After run all program, you can see gazebo and rviz like below picture.
+![](images/gazebo_urban.png)
+![](images/rviz_urban.png)
+
+Other operating steps are the same as [above](## Navigation in Matterport3D Counterpart)

@@ -207,12 +207,12 @@ RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa
 RUN chmod 600 /root/.ssh/id_rsa
 RUN touch /root/.ssh/known_hosts
 RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
-
+RUN echo "${SSH_PRIVATE_KEY}"
+RUN cd ${HOME} && git clone --recursive git@github.com:ARG-NCTU/pokingbot.git
 RUN apt-get -o Acquire::ForceIPv4=true update && apt-get -yq dist-upgrade \
     && apt-get -o Acquire::ForceIPv4=true install -yq --no-install-recommends \
     unzip
 
-RUN cd ${HOME} && git clone --recursive git@github.com:ARG-NCTU/pokingbot.git
 
 RUN /bin/bash -c '. /opt/ros/melodic/setup.bash \
     && cd ~/pokingbot/catkin_ws \
@@ -230,7 +230,7 @@ RUN cd ~/pokingbot/catkin_ws/src/real_to_sim_env/mesh \
     && unzip policy.zip
 
 RUN cd ~/pokingbot \
-    && gdown https://drive.google.com/uc?id=1KSKz_SYp-2YUHcJwylbZdrLtoUlbuqit 
+    && gdown https://drive.google.com/uc?id=1KSKz_SYp-2YUHcJwylbZdrLtoUlbuqit
 ##################################### Settings #####################################
 
 RUN echo "root ALL=(ALL)  ALL" >> /etc/sudoers \
