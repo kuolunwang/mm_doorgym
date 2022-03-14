@@ -202,4 +202,4 @@ After run all program, you can see gazebo and rviz like below picture.
 ![](images/gazebo_urban.png)
 ![](images/rviz_urban.png)
 
-Other operating steps are the same as [above](##Navigation-in-Matterport3D-Counterpart)
+Other operating steps are the same as [above](#Navigation-in-Matterport3D-Counterpart)
