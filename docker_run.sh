@@ -45,12 +45,12 @@ docker run -it \
   -e XAUTHORITY=$XAUTH \
   --privileged \
   -v "$XAUTH:$XAUTH" \
-  -v "/home/$USER/PokingBot:/home/argsubt/PokingBot" \
+  -v "/home/$USER/pokingbot:/home/argsubt/pokingbot" \
   -v "/tmp/.X11-unix:/tmp/.X11-unix" \
   -v "/etc/localtime:/etc/localtime:ro" \
   -v "/dev:/dev" \
   -v "/lib/modules:/lib/modules" \
-  --workdir "/home/argsubt/PokingBot" \
+  --workdir "/home/argsubt/pokingbot" \
   --user "root:root" \
   --name argsubt \
   --network host \
