@@ -1,0 +1,29 @@
+cmd "01_core" {
+    exec = "roscore";
+    host = "localhost";
+}
+cmd "02_gazebo" {
+    exec = "roslaunch real_to_sim_env gazebo_world.launch world:=urban";
+    host = "localhost";
+}
+cmd "03_husky" {
+    exec = "roslaunch husky_ur5 spawn_robot.launch x:=-25.564 y:=-34.93 z:=0.132 yaw:=1.57";
+    host = "localhost";
+}
+cmd "04_lidar_crop" {
+    exec = "roslaunch door_detector_urban lidar_crop.launch";
+    host = "localhost";
+}
+cmd "05_pub_tf" {
+    exec = "roslaunch pokingbot_ros pub_tf.launch";
+    host = "localhost";
+}
+cmd "06_rviz" {
+    exec = "rviz -d rviz/urban_tare.rviz";
+    host = "localhost";
+}
+
+script "open_env" {
+    start cmd "01_core" wait "running";
+    wait ms 2000;
+}

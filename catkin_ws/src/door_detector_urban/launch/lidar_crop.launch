@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="veh" default="robot"/>
+
+  <group ns="$(arg veh)">
+    <node pkg="door_detector_sim" type="lidar_crop" name="lidar_crop" output="screen">
+      <param name="~x_max" value="0" />
+      <param name="~y_max" value="0.45" />
+      <param name="~z_max" value="0.6" />
+      <param name="~x_min" value="-0.8" />
+      <param name="~y_min" value="-0.45" />
+      <param name="~z_min" value="-4" />
+    </node>
+
+    <node pkg="door_detector_urban" type="visualize_map" name="visualize_map" output="screen" />
+    <node pkg="door_detector_urban" type="vis_path.py" name="vis_path" output="screen" />
+
+  </group>
+</launch>
