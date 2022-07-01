@@ -40,6 +40,14 @@ class WheelTF(object):
             self.paraent_name
         )
 
+        # self.broadcaster.sendTransform(
+        #     (0,0,0),
+        #     (0,0,0,1),
+        #     rospy.Time.now(),
+        #     "map",
+        #     "odom"
+        # )
+
         # self.broadcaster.sendTransform((0, 0, 0), (0, 0, 0, 1), rospy.Time.now(), "odom", self.paraent_name)
 
         pose_msg = PoseStamped()
@@ -75,4 +83,4 @@ if __name__ == "__main__":
     wheeltf = WheelTF()
     while not rospy.is_shutdown():
         wheeltf.gazebo_odom()
-        rospy.sleep(0.1)
+        # rospy.sleep(0.1)

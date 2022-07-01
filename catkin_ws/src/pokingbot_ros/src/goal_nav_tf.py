@@ -9,7 +9,7 @@ from geometry_msgs.msg import PoseStamped, Twist
 from sensor_msgs.msg import LaserScan, Joy
 from std_msgs.msg import Bool, Float64
 from scipy.spatial.transform import Rotation as R
-
+import time
 
 class GoalNav(object):
 	def __init__(self):
@@ -69,6 +69,7 @@ class GoalNav(object):
 		if (msg.buttons[start_button] == 1) and not self.auto:
 			self.auto = 1
 			rospy.loginfo('go auto')
+			self.start = time.time()
 		elif msg.buttons[back_button] == 1 and self.auto:
 			self.auto = 0
 			rospy.loginfo('go manual')
@@ -114,6 +115,7 @@ class GoalNav(object):
 
 	def cb_laser(self, msg):
 		# rospy.loginfo("cb laser")
+		
 		scan = np.array(msg.ranges)
 		scan = np.clip(scan, 0, self.max_dis)
 		intensities = np.array(msg.intensities)
@@ -128,18 +130,9 @@ class GoalNav(object):
 			self.state_stack[-1] = scan
 			self.state_label_stack[:-1] = self.state_label_stack[1:]
 			self.state_label_stack[-1] = intensities
-		# ranges = np.array(msg.ranges)
-		# ranges = np.clip(ranges, 0, self.max_dis)
-		#
-		# if self.laser_stack is None:
-		#     self.laser_stack = np.tile(ranges, (self.laser_n, 1))
-		# else:
-		#     self.laser_stack[:-1] = self.laser_stack[1:]
-		#     self.laser_stack[-1] = ranges
-
-
 
 	def inference(self, event):
+
 		if self.goal is None:
 			rospy.loginfo("no goal")
 			return
@@ -157,6 +150,8 @@ class GoalNav(object):
 		if dis < 0.8:
 			rospy.loginfo("goal reached")
 			self.goal = None
+			end = time.time()
+			print("total", end-self.start)
 			return
 
 		# self.vel_ratio = rospy.get_param("/velocity_mode", 4) * (1./5)
