@@ -64,6 +64,7 @@ public:
     if (((x>25) && (x<40)) && ((y>-35) && (y<-20))) which_room = A;
     if (((x>10) && (x<25)) && ((y>-35) && (y<-20))) which_room = B;
     if (((x>-40) && (x<-20)) && ((y>-25) && (y<-15))) which_room = C;
+    if (((x>0) && (x<10)) && ((y>10) && (y<20))) which_room = D;
   }
 
   string RoomToString(Room c) {
@@ -75,6 +76,7 @@ public:
       case A: return "hinge_door_0.7";
       case B: return "hinge_door_1.2_1";
       case C: return "hinge_door_1.2_0";
+      case D: return "hinge_door_0";
       default: return "NAN";
     }
   }

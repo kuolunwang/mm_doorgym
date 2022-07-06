@@ -69,7 +69,7 @@ class GoalNav(object):
 
     def state_cb(self, msg):
 
-        if(msg.data == "nav"):
+        if(msg.data == "nav_door"):
             self.auto = 1
             rospy.loginfo('go auto')
             self.start = time.time()

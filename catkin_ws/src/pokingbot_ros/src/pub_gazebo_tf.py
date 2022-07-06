@@ -64,17 +64,17 @@ class WheelTF(object):
 
         self.pub_pose.publish(pose_msg)
 
-        odom= Odometry()
-        odom.header.stamp= rospy.Time.now()
-        odom.header.frame_id = "odom"
-        odom.pose.pose.position.x = agent.pose.position.x
-        odom.pose.pose.position.y = agent.pose.position.y
-        odom.pose.pose.position.z = agent.pose.position.z
-        odom.pose.pose.orientation.x = agent.pose.orientation.x
-        odom.pose.pose.orientation.y = agent.pose.orientation.y
-        odom.pose.pose.orientation.z = agent.pose.orientation.z
-        odom.pose.pose.orientation.w = agent.pose.orientation.w
-        self.pub_odometry.publish(odom)
+        # odom= Odometry()
+        # odom.header.stamp= rospy.Time.now()
+        # odom.header.frame_id = "odom"
+        # odom.pose.pose.position.x = agent.pose.position.x
+        # odom.pose.pose.position.y = agent.pose.position.y
+        # odom.pose.pose.position.z = agent.pose.position.z
+        # odom.pose.pose.orientation.x = agent.pose.orientation.x
+        # odom.pose.pose.orientation.y = agent.pose.orientation.y
+        # odom.pose.pose.orientation.z = agent.pose.orientation.z
+        # odom.pose.pose.orientation.w = agent.pose.orientation.w
+        # self.pub_odometry.publish(odom)
 
 
 
