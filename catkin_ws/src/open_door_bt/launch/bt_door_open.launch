@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<launch>
+    
+    <!-- condition -->
+    <node pkg="open_door_bt" type="init_condition" name="state_init"/>
+    <node pkg="open_door_bt" type="door_condition" name="state_door"/>
+    <node pkg="open_door_bt" type="reach_door_condition" name="state_reach_door"/>
+    <node pkg="open_door_bt" type="reach_goal_condition" name="state_reach_goal"/>
+
+    <!-- action -->
+    <node pkg="open_door_bt" type="init" name="action_init"/>
+    <node pkg="open_door_bt" type="open_door" name="action_open"/>
+    <node pkg="open_door_bt" type="reach_door" name="action_reach_door"/>
+    <node pkg="open_door_bt" type="reach_goal" name="action_reach_goal"/>
+
+</launch>
