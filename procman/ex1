@@ -1,0 +1,45 @@
+cmd "01_core" {
+    exec = "roscore";
+    host = "localhost";
+}
+cmd "02_mazeT_door" {
+    exec = "roslaunch real_to_sim_env gazebo_world.launch world:=mazeT_door";
+    host = "localhost";
+}
+group "03_robot" {
+    cmd "husky_ur5" {
+        exec = "roslaunch husky_ur5 spawn_robot.launch";
+        host = "localhost";
+    }
+    cmd "husky_stick" {
+        exec = "roslaunch husky_ur5 spawn_robot.launch stick:=true ur5:=false";
+        host = "localhost";
+    }
+}
+cmd "04_door_detection" {
+    exec = "roslaunch door_detector_632 detection.launch";
+    host = "localhost";
+}
+group "05_inference" {
+    cmd "pokingbot" {
+        exec = "roslaunch pokingbot_ros goal_poking_tf.launch ";
+        host = "localhost";
+    }
+    cmd "rl_oa" {
+        exec = "roslaunch pokingbot_ros goal_rl_tf.launch ";
+        host = "localhost";
+    }
+    cmd "tare" {
+        exec = "roslaunch pokingbot_ros pub_tf.launch ";
+        host = "localhost";
+    }
+}
+cmd "06_rviz" {
+    exec = "rviz -d rviz/visual.rviz";
+    host = "localhost";
+}
+
+script "open_env" {
+    start cmd "01_core" wait "running";
+    wait ms 2000;
+}

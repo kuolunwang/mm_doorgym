@@ -7,11 +7,9 @@ import math
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, Twist
 from sensor_msgs.msg import LaserScan, Joy
-from std_msgs.msg import Bool, String
+from std_msgs.msg import Bool
 from scipy.spatial.transform import Rotation as R
-from gazebo_msgs.srv import *
-import time
-# from tf.transformations import euler_from_quaternion, quaternion_from_euler
+
 
 class GoalNav(object):
     def __init__(self):
@@ -24,9 +22,7 @@ class GoalNav(object):
             '~linear_scale', 0.3), 'angular': rospy.get_param("~angular_scale", 0.18)}
 
         self.auto = 0
-        self.goal = np.array([9.3, 12.8])
-        # self.goal = np.array([20.38, -24.3])
-        # self.goal = None
+        self.goal = None
         self.pos_track = None
         self.laser_stack = None
         self.last_pos = None
@@ -47,7 +43,6 @@ class GoalNav(object):
 
         # pub cmd
         self.pub_cmd = rospy.Publisher("cmd_out", Twist, queue_size=1)
-        self.pub_state = rospy.Publisher("/state_re", String, queue_size=1)
 
         # subscriber, timer
         self.sub_joy = rospy.Subscriber("joy", Joy, self.cb_joy, queue_size=1)
@@ -57,8 +52,6 @@ class GoalNav(object):
             "odom_in", PoseStamped, self.cb_odom, queue_size=1)
         self.sub_laser = rospy.Subscriber(
             "laser_in",  LaserScan, self.cb_laser, queue_size=1)
-        self.get_angle = rospy.ServiceProxy("/gazebo/get_link_state", GetLinkState)
-        self.sub_state = rospy.Subscriber("/state", String, self.state_cb, queue_size=1)
         self.timer = rospy.Timer(rospy.Duration(0.1), self.inference)
 
     def scale_pose(self, value):
@@ -67,13 +60,6 @@ class GoalNav(object):
         elif value < 0:
             return -math.log(1 + abs(value))
 
-    def state_cb(self, msg):
-
-        if(msg.data == "nav_door"):
-            self.auto = 1
-            rospy.loginfo('go auto')
-            self.start = time.time()
-
     def cb_joy(self, msg):
         start_button = 7
         back_button = 6
@@ -81,7 +67,6 @@ class GoalNav(object):
         if (msg.buttons[start_button] == 1) and not self.auto:
             self.auto = 1
             rospy.loginfo('go auto')
-            self.start = time.time()
         elif msg.buttons[back_button] == 1 and self.auto:
             self.auto = 0
             rospy.loginfo('go manual')
@@ -108,15 +93,15 @@ class GoalNav(object):
                          msg.pose.orientation.z,
                          msg.pose.orientation.w])
         yaw = r.as_euler('zyx')[0]
-        self.angle = math.atan2(diff[1], diff[0]) - yaw
-        if self.angle >= np.pi:
-            self.angle -= 2*np.pi
-        elif self.angle <= -np.pi:
-            self.angle += 2*np.pi
+        angle = math.atan2(diff[1], diff[0]) - yaw
+        if angle >= np.pi:
+            angle -= 2*np.pi
+        elif angle <= -np.pi:
+            angle += 2*np.pi
 
         # update pose tracker
         diff = np.array([self.scale_pose(v) for v in diff])
-        track_pos = np.append(diff, self.angle)
+        track_pos = np.append(diff, angle)
         if self.pos_track is None:
             self.pos_track = np.tile(track_pos, (self.pos_n, 1))
         else:
@@ -125,13 +110,8 @@ class GoalNav(object):
         self.last_pos = new_pos
 
     def cb_laser(self, msg):
-
-        # intensities = np.array(msg.intensities)
         ranges = np.array(msg.ranges)
         ranges = np.clip(ranges, 0, self.max_dis)
-
-        # for i in range(len(intensities)):
-            # if intensities[i]==1: ranges[i]=100 # ignore
 
         if self.laser_stack is None:
             self.laser_stack = np.tile(ranges, (self.laser_n, 1))
@@ -150,33 +130,12 @@ class GoalNav(object):
             return
 
         dis = np.linalg.norm(self.goal-self.last_pos)
+        if dis < 0.8:
+            rospy.loginfo("goal reached")
+            self.goal = None
+            return
 
-        while dis < 0.6:
-        # if dis < 0.8:
-            req = GetLinkStateRequest()
-            req.link_name = "base_link"
-            pos = self.get_angle(req)
-
-            r = R.from_quat([pos.link_state.pose.orientation.x,
-                            pos.link_state.pose.orientation.y,
-                            pos.link_state.pose.orientation.z,
-                            pos.link_state.pose.orientation.w])
-            yaw = r.as_euler('zyx')[0]
-            cmd = Twist()
-            if(yaw >= -1.45):
-                cmd.angular.z = -0.1
-            elif(yaw <= -1.65):
-                cmd.angular.z = +0.1
-            else:
-                rospy.loginfo("goal reached")
-                self.goal = None
-                print("total", time.time() - self.start)
-                self.pub_state.publish("reached")
-                return 
-                # break 
-            self.pub_cmd.publish(cmd)
-
-        self.vel_ratio = rospy.get_param("/velocity_mode", 4) * (1./5)
+        # self.vel_ratio = rospy.get_param("/velocity_mode", 4) * (1./5)
 
         # reshape
         laser = self.laser_stack.reshape(-1)
