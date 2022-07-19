@@ -2,8 +2,8 @@ cmd "01_core" {
     exec = "roscore";
     host = "localhost";
 }
-cmd "02_mazeT_door" {
-    exec = "roslaunch real_to_sim_env gazebo_world.launch world:=mazeT_door";
+cmd "02_room_door" {
+    exec = "roslaunch real_to_sim_env gazebo_world.launch world:=room_door";
     host = "localhost";
 }
 group "03_robot" {
