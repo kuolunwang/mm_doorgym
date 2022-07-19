@@ -6,17 +6,29 @@ cmd "02_pull_box" {
     exec = "roslaunch real_to_sim_env gazebo_world.launch world:=pull_box";
     host = "localhost";
 }
-cmd "03_husky_ur5" {
-    exec = "roslaunch husky_ur5 spawn_robot.launch y:=14.2" pull:=true;
+group "03_robot" {
+    cmd "husky_ur5" {
+        exec = "roslaunch husky_ur5 spawn_robot.launch y:=14.2 pull:=true";
+        host = "localhost";
+    }
+    cmd "husky_stick" {
+        exec = "roslaunch husky_ur5 spawn_robot.launch stick:=true ur5:=false y:=14.2";
+        host = "localhost";
+    }
+}
+cmd "04_box_detection" {
+    exec = "roslaunch door_detector_632 box_detection.launch";
     host = "localhost";
 }
-cmd "04_door_detection" {
-    exec = "roslaunch door_detector_632 detection.launch";
-    host = "localhost";
-}
-cmd "05_tare" {
-    exec = "roslaunch pokingbot_ros pub_tf.launch ";
-    host = "localhost";
+group "05_inference" {
+    cmd "pokingbot" {
+        exec = "roslaunch pokingbot_ros goal_poking_tf.launch ";
+        host = "localhost";
+    }
+    cmd "tare" {
+        exec = "roslaunch pokingbot_ros pub_tf.launch ";
+        host = "localhost";
+    }
 }
 cmd "06_rviz" {
     exec = "rviz -d rviz/visual.rviz";
