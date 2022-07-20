@@ -2,17 +2,31 @@ cmd "01_core" {
     exec = "roscore";
     host = "localhost";
 }
-cmd "02_pull_box" {
-    exec = "roslaunch real_to_sim_env gazebo_world.launch world:=pull_box";
-    host = "localhost";
-}
-group "03_robot" {
-    cmd "husky_ur5" {
-        exec = "roslaunch husky_ur5 spawn_robot.launch y:=14.2 pull:=true";
+group "02_environment" {
+    cmd "pull_box" {
+        exec = "roslaunch real_to_sim_env gazebo_world.launch world:=pull_box";
         host = "localhost";
     }
-    cmd "husky_stick" {
+    cmd "pull_cardboard" {
+        exec = "roslaunch real_to_sim_env gazebo_world.launch world:=pull_cardboard";
+        host = "localhost";
+    }
+}
+group "03_robot" {
+    cmd "husky_ur5_box" {
+        exec = "roslaunch husky_ur5 spawn_robot.launch y:=14.2 box:=true";
+        host = "localhost";
+    }
+    cmd "husky_stick_box" {
         exec = "roslaunch husky_ur5 spawn_robot.launch stick:=true ur5:=false y:=14.2";
+        host = "localhost";
+    }
+    cmd "husky_ur5_cardboard" {
+        exec = "roslaunch husky_ur5 spawn_robot.launch y:=13.5 cardboard:=true";
+        host = "localhost";
+    }
+    cmd "husky_stick_cardboard" {
+        exec = "roslaunch husky_ur5 spawn_robot.launch stick:=true ur5:=false y:=13.5";
         host = "localhost";
     }
 }
