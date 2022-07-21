@@ -16,11 +16,16 @@ group "03_robot" {
         host = "localhost";
     }
 }
-cmd "04_door_detection" {
+cmd "04_init" {
+    exec = "rosservice call /husky_ur5/init";
+    host = "localhost";
+}
+
+cmd "05_door_detection" {
     exec = "roslaunch door_detector_632 door_detection.launch";
     host = "localhost";
 }
-group "05_inference" {
+group "06_inference" {
     cmd "pokingbot" {
         exec = "roslaunch pokingbot_ros goal_poking_tf.launch ";
         host = "localhost";
@@ -34,7 +39,7 @@ group "05_inference" {
         host = "localhost";
     }
 }
-cmd "06_rviz" {
+cmd "07_rviz" {
     exec = "rviz -d rviz/visual.rviz";
     host = "localhost";
 }
