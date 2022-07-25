@@ -399,7 +399,7 @@ Then open two termianl, one is run open_door algorithm, and the other one is ope
     source environment.sh
     roslaunch vehicle_simulator husky_tare.launch opened:=true normal:=false ignored:=false
     ```
-2. Second terminal for dooropen
+2. Second terminal for door open
 
     ```
     cd [path/to/DoorGym]
@@ -408,3 +408,5 @@ Then open two termianl, one is run open_door algorithm, and the other one is ope
     source environment.sh
     roslaunch doorgym door_open_bt.launch
     ```
+
+Finished above commands, you will see robot automatically run in the gazebo.
