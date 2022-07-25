@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMG=argnctu/pokingbot-rl:rtx30
+IMG=argnctu/mm_doorgym:rtx30
 
 xhost +
 containerid=$(docker ps -aqf "ancestor=${IMG}")&& echo $containerid

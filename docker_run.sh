@@ -45,12 +45,12 @@ docker run -it \
   -e XAUTHORITY=$XAUTH \
   --privileged \
   -v "$XAUTH:$XAUTH" \
-  -v "/home/$USER/pokingbot:/home/argsubt/pokingbot" \
+  -v "/home/$USER/mm_doorgym:/home/argsubt/mm_doorgym" \
   -v "/tmp/.X11-unix:/tmp/.X11-unix" \
   -v "/etc/localtime:/etc/localtime:ro" \
   -v "/dev:/dev" \
   -v "/lib/modules:/lib/modules" \
-  --workdir "/home/argsubt/pokingbot" \
+  --workdir "/home/argsubt/mm_doorgym" \
   --user "root:root" \
   --name argsubt \
   --network host \
@@ -58,5 +58,5 @@ docker run -it \
   $DOCKER_OPTS \
   --privileged \
   --security-opt seccomp=unconfined \
-  argnctu/pokingbot-rl:rtx30 \
+  argnctu/mm_doorgym:rtx30 \
   bash

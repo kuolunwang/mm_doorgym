@@ -9,6 +9,8 @@ else
 fi
 echo "catkin_make -j$NJ"
 
+source install.sh
+
 # all
 catkin_make -j$NJ -C ./catkin_ws
 

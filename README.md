@@ -1,20 +1,14 @@
-# pokingbot
+# mm_doorgym
 
-![example workflow](https://github.com/ARG-NCTU/pokingbot/actions/workflows/main.yml/badge.svg)
+## Clone repo 
 
-PokingBot : Enabling Real-world Interactive Navigation via
-Curriculum Reinforcement Learning for Search and Rescue Missions
+Deep Reinforcement Learning-based Mobile Manipulator
+Controls for Interactive Navigation through Doors in Hardware
+in the Loop Simulation and Real World Environments
 
-## Clone repo
 ```
-    git clone --recursive git@github.com:ARG-NCTU/pokingbot.git
+git clone --recursive git@github.com:ARG-NCTU/mm_doorgym.git
 ```
-
-## Download pretrained weight and mesh file
-
-Please manual download [pretrained weight](https://drive.google.com/drive/folders/1ZND9f0_t7W-6U3cFv8tmFs50dQQBadG8?usp=sharing) to pokingbot/catkin_ws/src/pokingbot_ros/model and [mesh file](https://drive.google.com/file/d/19Z9GJjG-H34WpE_lON0qYFkzD-fb7x_j/view?usp=sharing) to pokingbot/catkin_ws/src/real_to_sim_env/mesh.
-
-**After download mesh finished, recommend delete all jpg file in EE6F/mesh, avoid GPU run out of space**. 
 
 ## Set up the Docker 
 
@@ -22,83 +16,86 @@ The all required environment was organized, only need laptop or computer with GP
 
 ### How to use
 
-We released two version docker images, one is for developer that can modifiy other packages on this and compile by yourself, the other one is for user that easy to use without extra catkin_make.
+We released docker images for developer that can modifiy other packages on this and compile by yourself.
 
 1. Docker Run
 
-    Run this script to pull docker image to your workstation, **if your gpu is 30 series GPU, please edit docker image label from latest(rtx20_user) to rtx30(rtx30_user) in docker_run.sh(docker_run_user.sh) and docker_join.sh(docker_join_user.sh)**.
-    - For the developer
+    Run this script to pull docker image to your workstation, **if your gpu is 20 series GPU, please edit docker image label from rtx30 to latest in docker_run.sh and docker_join.sh**.
 
-        ```
-            source docker_run.sh
-        ```
-
-    - For the user
-
-        ```
-            source docker_run_user.sh
-        ```
+    ```
+    source docker_run.sh
+    ```
 2. Docker Join
 
     If want to enter same docker image, type below command.
-    - For the developer
 
-        ```
-            source docker_join.sh
-        ```
-
-    - For the user
-
-        ```
-            source docker_join_user.sh
-        ```
+    ```
+    source docker_join.sh
+    ```
 3. Catkin_make
 
-    Execute compile script in the first time, then the other can ignore this step. **If you use user mode, you can ignore this command.**
+    Execute compile script in the first time, then the other can ignore this step.
     ```
-        source catkin_make.sh
+    source catkin_make.sh
     ``` 
 
 4. setup environment
 
     Make sure run this command when the terminal enter docker. 
     ```
-        source environment.sh
+    source environment.sh
     ```
 
-## Navigation in Matterport3D Counterpart 
+## Experiment1
 
-We arranged all command in procman, easy to inference our proposed method and Run our Matterport3D Counterpart environment. **This example use developer mode to demo.**
+We arranged all command in procman, easy to inference our proposed method and Run other baseline.
 
-### Open procman window
+### Step1. Open procman window
 ```
-    source docker_run.sh
-    source catkin_make.sh
-    source environment.sh
-    source start_EE6F.sh
+source docker_run.sh
+source catkin_make.sh
+source environment.sh
+source start_ex1.sh
 ```
-
 After open procman, you will see below window.
-![](images/procman_window.png)
+![](images/ex1.png)
 
-Then following this order to run(ctrl + s), the other useful command list below.
+The useful command for procman list below.
 - Run(ctrl＋s)
 - Stop(ctrl＋t)
 - ReRun(ctrl+r)
 
-### Inference
+### Step2. Inference
 
-After run all program, you can see gazebo and rviz like below picture.
-![](images/gazebo.png)
-![](images/rviz.png)
+* RL_oa
 
-Then open two termianl, one is set goal, inital robot position and set door angle, the other one is replace joystick to control robot, **if you have joystick, you can ignore this step**.
+    Following it order to run command, 03_robot select **husky_ur5** and 06_inference chose **rl_oa**.
+
+* TARE
+
+    Following it order to run command, 03_robot select **husky_ur5** and 06_inference chose **tare**.
+
+    Open one terminal to run tare algorithm.
+    ```
+    cd [path/to/autonomous_exploration_development_environment]
+    source docker_run.bash
+    catkin_make
+    source environment.sh
+    roslaunch vehicle_simulator husky_tare.launch opened:=false normal:=false ignored:=true
+    ```
+
+* Pokingbot
+
+    Following it order to run command, 03_robot select **husky_stick** and 06_inference chose **pokingbot**.
+
+Then open two termianl, one is set goal, the other one is replace joystick to control robot, **if you have joystick, you can ignore this step**.
+
 1. One termianl
     ```
         source docker_join.sh
         source environment.sh
     ```
-    - set goal
+    - set right goal
     
         You can use 2D Nav Goal in Rviz or use command to decide.
         ```
@@ -110,8 +107,8 @@ Then open two termianl, one is set goal, inital robot position and set door angl
             frame_id: 'map'
             pose:
             position:
-                x: 22.443239247165142
-                y: -28.656319762302733
+                x: 8.0
+                y: 8.5
                 z: 0.13225967565936952
             orientation:
                 x: 0.0
@@ -119,44 +116,26 @@ Then open two termianl, one is set goal, inital robot position and set door angl
                 z: 0.0
                 w: 1"
         ```
-    - init robot
-
-        You can use move in gazebo to move robot or use command to set.
+    - set left goal
+    
+        You can use 2D Nav Goal in Rviz or use command to decide.
         ```
-            rosservice call /gazebo/set_model_state "model_state:
-            model_name: 'robot'
+            rostopic pub /move_base_simple/goal geometry_msgs/PoseStamped "header:
+            seq: 0
+            stamp:
+                secs: 0
+                nsecs: 0
+            frame_id: 'map'
             pose:
-                position:
-                x: 27.4999959616
-                y: -23.471198697
-                z: 0.132260098029
-                orientation:
-                x: 2.75171907041e-05
-                y: -4.34359624021e-06
-                z: -0.999997186395
-                w: 0.00237200905826
-            twist:
-                linear:
+            position:
+                x: 10.25
+                y: 8.52
+                z: 0.13225967565936952
+            orientation:
                 x: 0.0
                 y: 0.0
                 z: 0.0
-                angular:
-                x: 0.0
-                y: 0.0
-                z: 0.0
-            reference_frame: ''"
-        ```
-
-    - init door
-
-        You can decide door angle by using this command.
-        ```
-            rosservice call /gazebo/set_model_configuration "model_name: 'hinge_door_1.2_1'
-            urdf_param_name: 'robot_description'
-            joint_names:
-            - 'hinge'
-            joint_positions:
-            - 0"
+                w: 1"
         ```
 2. Two terminal
     
@@ -185,7 +164,247 @@ Then open two termianl, one is set goal, inital robot position and set door angl
         ```
             rostopic pub /robot/joy_teleop/joy sensor_msgs/Joy '{ header: {seq: 10, stamp: {secs: 1431222430, nsecs: 345678}, frame_id: "3"}, axes: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0], buttons: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]}'
         ```
-        
-<!-- ## Navigation in Virtual DARPA Subt Challenge -->
+
+* DoorGym
+
+    Following it order to run command, 03_robot select **husky_ur5** and 06_inference chose **tare**.
+
+    Please manual comment 134 rows and uncomment 135 rows on [state_machine_ex1.py](https://github.com/kuolunwang/DoorGym/blob/master/catkin_ws/src/doorgym/src/state_machine_ex1.py)
 
 
+* RL_mm(Ours)
+
+    Following it order to run command, 03_robot select **husky_ur5** and 06_inference chose **tare**.
+
+    Please manual comment 135 rows and uncomment 134 rows on [state_machine_ex1.py](https://github.com/kuolunwang/DoorGym/blob/master/catkin_ws/src/doorgym/src/state_machine_ex1.py)
+
+Then open two termianl, one is run open_door algorithm, and the other one is open tare to navigate door and goal.
+
+1. One terminal for tare
+
+    ```
+    cd [path/to/autonomous_exploration_development_environment]
+    source docker_run.bash
+    catkin_make
+    source environment.sh
+    roslaunch vehicle_simulator husky_tare.launch opened:=true normal:=false ignored:=false
+    ```
+2. Second terminal for dooropen
+
+    ```
+    cd [path/to/DoorGym]
+    source docker_run.sh
+    source catkin_make.sh
+    source environment.sh
+    roslaunch doorgym door_open.launch state:=true
+    ```
+
+## Experiment2
+
+We arranged all command in procman, easy to inference our proposed method and Run other baseline.
+
+### Step1. Open procman window
+```
+source docker_run.sh
+source catkin_make.sh
+source environment.sh
+source start_ex2.sh
+```
+After open procman, you will see below window.
+![](images/ex2.png)
+
+The useful command for procman list below.
+- Run(ctrl＋s)
+- Stop(ctrl＋t)
+- ReRun(ctrl+r)
+
+### Step2. Inference
+
+* UR5
+
+    Following it order to run command, 03_robot select **husky_ur5**.
+
+    Open one terminal to run door open.
+
+    - For 6 joints
+        ```
+        cd [path/to/DoorGym]
+        source docker_run.sh
+        source catkin_make.sh
+        source environment.sh
+        roslaunch doorgym door_open.launch state:=false ur5:=true 3dof:=false
+        ```
+    - For 3 DOF
+        ```
+        cd [path/to/DoorGym]
+        source docker_run.sh
+        source catkin_make.sh
+        source environment.sh
+        roslaunch doorgym door_open.launch state:=false ur5:=true 3dof:=true
+        ```
+
+* VX300s
+
+    Following it order to run command, 03_robot select **husky_vx300s**.
+
+    Open one terminal to run door open.
+
+    - For 6 joints
+        ```
+        cd [path/to/DoorGym]
+        source docker_run.sh
+        source catkin_make.sh
+        source environment.sh
+        roslaunch doorgym door_open.launch state:=false ur5:=false 3dof:=false
+        ```
+    - For 3 DOF
+        ```
+        cd [path/to/DoorGym]
+        source docker_run.sh
+        source catkin_make.sh
+        source environment.sh
+        roslaunch doorgym door_open.launch state:=false ur5:=false 3dof:=true
+        ```
+
+## Experiment3
+
+We arranged all command in procman, easy to inference our proposed method and Run other baseline.
+
+### Step1. Open procman window
+```
+source docker_run.sh
+source catkin_make.sh
+source environment.sh
+source start_ex2.sh
+```
+After open procman, you will see below window.
+![](images/ex3.png)
+
+The useful command for procman list below.
+- Run(ctrl＋s)
+- Stop(ctrl＋t)
+- ReRun(ctrl+r)
+
+### Step2. Inference 
+
+* Box
+
+    - Pokingbot
+
+        Following it order to run command, 02_environment select **pull_box**, 03_robot select **husky_stick_box**, 05_inference select **pokingbot**.
+
+        Open two terminal to set goal and enable robot to navigate goal, the related code can refer above.
+
+    - DoorGym
+
+        Following it order to run command 01 to 03, 02_environment select **pull_box**, 03_robot select **husky_ur5_box**, then run pull code to remove box out of passage.
+
+        Please manual comment 46 and 110 rows and uncomment 47 and 108 rows on [inference_pull.py](https://github.com/kuolunwang/DoorGym/blob/master/catkin_ws/src/doorgym/src/inference_pull.py)
+
+        ```
+        cd [path/to/DoorGym]
+        source docker_run.sh
+        source catkin_make.sh
+        source environment.sh
+        roslaunch doorgym pull_box.launch 3dof:=false
+        ```
+
+        Then the fininsh pull box task, keep it order to execute 04 to 06, 05_inference select **tare**.
+
+        Open one terminal to run tare algorithm.
+
+        ```
+        cd [path/to/autonomous_exploration_development_environment]
+        source docker_run.bash
+        catkin_make
+        source environment.sh
+        roslaunch vehicle_simulator husky_tare.launch opened:=false normal:=true ignored:=false
+        ```
+
+    - 6 joints
+
+        The steps are same as DoorGym, only edit some code.
+
+        Please manual comment 47 and 110 rows and uncomment 46 and 108 rows on [inference_pull.py](https://github.com/kuolunwang/DoorGym/blob/master/catkin_ws/src/doorgym/src/inference_pull.py)
+
+    - 3 DOF
+
+        The steps are same as DoorGym, only edit some code.
+
+        Please manual comment 110 rows and uncomment 108 rows on [inference_3dof_pull.py](https://github.com/kuolunwang/DoorGym/blob/master/catkin_ws/src/doorgym/src/inference_3dof_pull.py)
+
+        Replace pull code below.
+        ```
+        cd [path/to/DoorGym]
+        source docker_run.sh
+        source catkin_make.sh
+        source environment.sh
+        roslaunch doorgym pull_box.launch 3dof:=true
+        ```
+
+
+* Cardboard
+
+    The all steps are same as box, before you execute it, please manual comment 108 rows and uncomment 110 rows on [inference_pull.py](https://github.com/kuolunwang/DoorGym/blob/master/catkin_ws/src/doorgym/src/inference_pull.py) and comment 108 rows and uncomment 110 rows on [inference_3dof_pull.py](https://github.com/kuolunwang/DoorGym/blob/master/catkin_ws/src/doorgym/src/inference_3dof_pull.py).
+
+    Then 02_environment select **pull_cardboard**.
+
+    - For the Pokingbot
+
+        The 03_robot select **husky_stick_cardboard**.
+
+    - For the other
+
+        The 03_robot select **husky_ur5_cardboard**
+
+## Behavior Tree
+
+Apart from the smach, I also use behavior tree to infer this task, below example for husky ur5 3 dof push task.
+
+```
+source docker_run.sh
+source catkin_make.sh
+source environment.sh
+source start_ex1.sh
+```
+After open procman, you will see below window.
+![](images/ex1.png)
+
+The useful command for procman list below.
+- Run(ctrl＋s)
+- Stop(ctrl＋t)
+- ReRun(ctrl+r)
+
+Following it order to run command, 03_robot select **husky_ur5** and 06_inference chose **tare**.
+
+Open one terminal to open behavior tree.
+
+```
+source docker_join.sh
+source environment.sh
+roslaunch behavior_tree behavior_tree.launch
+```
+
+you will see below gui, then press "Open Config..." and select open_door.tree, select Debug Mode will show below test button.
+![](images/bt.png)
+
+Then open two termianl, one is run open_door algorithm, and the other one is open tare to navigate door and goal.
+
+1. One terminal for tare
+
+    ```
+    cd [path/to/autonomous_exploration_development_environment]
+    source docker_run.bash
+    catkin_make
+    source environment.sh
+    roslaunch vehicle_simulator husky_tare.launch opened:=true normal:=false ignored:=false
+    ```
+2. Second terminal for dooropen
+
+    ```
+    cd [path/to/DoorGym]
+    source docker_run.sh
+    source catkin_make.sh
+    source environment.sh
+    roslaunch doorgym door_open_bt.launch
+    ```
