@@ -7,7 +7,7 @@ Controls for Interactive Navigation through Doors in Hardware
 in the Loop Simulation and Real World Environments
 
 ```
-git clone --recursive git@github.com:ARG-NCTU/mm_doorgym.git
+git clone --recursive git@github.com:kuolunwang/mm_doorgym.git
 ```
 
 ## Set up the Docker 
